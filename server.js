@@ -18,6 +18,7 @@ mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false,
 });
 mongoose.Promise = Promise;
 
@@ -89,6 +90,7 @@ const Cart = mongoose.model("Cart", CartSchema);
 if (process.env.RESET_DB) {
   const seedDB = async () => {
     await Item.deleteMany();
+    console.log("startar om!");
 
     itemsInStore.items.forEach(async (item) => {
       const newItem = await new Item(item);
@@ -100,6 +102,7 @@ if (process.env.RESET_DB) {
 
 const authenticateUser = async (req, res, next) => {
   const accessToken = req.header("Authorization");
+  console.log(accessToken);
 
   try {
     const user = await User.findOne({ accessToken });
@@ -137,7 +140,7 @@ app.post("/signup", async (req, res) => {
     }).save();
     const newCart = await new Cart({
       items: [],
-      userId: newCart,
+      userId: newUser._id,
     }).save();
 
     res.json({
@@ -204,17 +207,46 @@ app.get("/items/:id", async (req, res) => {
   try {
     const item = await Item.findById(id).exec();
     res.json(item);
-  } catch {}
+  } catch {
+    res
+      .status(401)
+      .json({ error: "Failed to fetch item from database", details: error });
+  }
 });
 
-app.get("/cart/:id", authenticateUser);
+// app.get("/cart/:id", authenticateUser);
 app.get("/cart/:id", async (req, res) => {
   const { id } = req.params;
-
   try {
     const cart = await Cart.findOne({ userId: id });
+    console.log(cart);
     res.json(cart);
-  } catch {}
+  } catch {
+    res
+      .status(401)
+      .json({ error: "Failed to fetch cart from database", details: error });
+  }
+});
+
+// app.post("/cart/:id", authenticateUser);
+app.post("/cart/:id", async (req, res) => {
+  const { id } = req.params;
+  const { itemList } = req.body;
+  try {
+    const cart = await Cart.findOne({ userId: id });
+    const filter = { userId: id };
+    const update = { items: itemList };
+
+    let newCart = await Cart.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+    console.log(newCart);
+    res.json(newCart);
+  } catch {
+    res
+      .status(401)
+      .json({ error: "Failed to fetch cart from database", details: error });
+  }
 });
 
 app.listen(port, () => {

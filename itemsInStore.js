@@ -87,7 +87,7 @@ const itemsInStore = {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       image:
         "https://res.cloudinary.com/dxewmjaue/image/upload/v1625235107/storeItems/goldbutterflyhoops_vexc2d.jpg",
-      name: "GOLD BUTTERFLY HOOPS",
+      name: "BUTTERFLY HOOPS",
       price: 120,
       isfeatured: true,
     },
@@ -97,7 +97,7 @@ const itemsInStore = {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       image:
         "https://res.cloudinary.com/dxewmjaue/image/upload/v1625235108/storeItems/pearlhoops_vvpzl0.jpg",
-      name: "GOLD PEARL HOOPS",
+      name: "PEARL HOOPS",
       price: 120,
       isfeatured: false,
     },
@@ -107,7 +107,7 @@ const itemsInStore = {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       image:
         "https://res.cloudinary.com/dxewmjaue/image/upload/v1625235107/storeItems/goldstarearrings_emz2rh.jpg",
-      name: "GOLD STAR EARRINGS",
+      name: "STAR EARRINGS",
       price: 120,
       isfeatured: false,
     },
@@ -117,7 +117,7 @@ const itemsInStore = {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       image:
         "https://res.cloudinary.com/dxewmjaue/image/upload/v1625235107/storeItems/goldstarhoops_j6j8tv.jpg",
-      name: "GOLD STAR HOOPS",
+      name: "STAR HOOPS",
       price: 120,
       isfeatured: false,
     },
@@ -137,7 +137,7 @@ const itemsInStore = {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       image:
         "https://res.cloudinary.com/dxewmjaue/image/upload/v1625235108/storeItems/tarotdeck_nm1ymu.jpg",
-      name: "VINTAGE TAROT DECK",
+      name: "TAROT DECK",
       price: 150,
       isfeatured: false,
     },
