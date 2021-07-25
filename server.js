@@ -90,8 +90,6 @@ const Cart = mongoose.model("Cart", CartSchema);
 if (process.env.RESET_DB) {
   const seedDB = async () => {
     await Item.deleteMany();
-    console.log("startar om!");
-
     itemsInStore.items.forEach(async (item) => {
       const newItem = await new Item(item);
       await newItem.save();
@@ -102,8 +100,6 @@ if (process.env.RESET_DB) {
 
 const authenticateUser = async (req, res, next) => {
   const accessToken = req.header("Authorization");
-  console.log(accessToken);
-
   try {
     const user = await User.findOne({ accessToken });
     if (user) {
@@ -119,7 +115,12 @@ const authenticateUser = async (req, res, next) => {
 const port = process.env.PORT || 8080;
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://stay-witchy.netlify.app",
+    methods: ["GET", "POST"],
+  })
+);
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -165,10 +166,10 @@ app.post("/signin", async (req, res) => {
           accessToken: user.accessToken,
         });
       } else {
-        res.status(400).json({ success: false, message: "Wrong password" });
+        res.status(401).json({ success: false, message: "Wrong password" });
       }
     } else {
-      res.status(400).json({ success: false, message: "User not found" });
+      res.status(404).json({ success: false, message: "User not found" });
     }
   } catch (error) {
     res.status(400).json({ success: false, message: "Invalid request", error });
@@ -209,26 +210,23 @@ app.get("/items/:id", async (req, res) => {
     res.json(item);
   } catch {
     res
-      .status(401)
+      .status(400)
       .json({ error: "Failed to fetch item from database", details: error });
   }
 });
 
-// app.get("/cart/:id", authenticateUser);
+app.get("/cart/:id", authenticateUser);
 app.get("/cart/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const cart = await Cart.findOne({ userId: id });
-    console.log(cart);
     res.json(cart);
   } catch {
-    res
-      .status(401)
-      .json({ error: "Failed to fetch cart from database", details: error });
+    res.status(400).json({ error: "Failed to fetch cart from database" });
   }
 });
 
-// app.post("/cart/:id", authenticateUser);
+app.post("/cart/:id", authenticateUser);
 app.post("/cart/:id", async (req, res) => {
   const { id } = req.params;
   const { itemList } = req.body;
@@ -240,11 +238,10 @@ app.post("/cart/:id", async (req, res) => {
     let newCart = await Cart.findOneAndUpdate(filter, update, {
       new: true,
     });
-    console.log(newCart);
     res.json(newCart);
   } catch {
     res
-      .status(401)
+      .status(400)
       .json({ error: "Failed to fetch cart from database", details: error });
   }
 });
