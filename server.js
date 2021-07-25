@@ -115,12 +115,7 @@ const authenticateUser = async (req, res, next) => {
 const port = process.env.PORT || 8080;
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://stay-witchy.netlify.app",
-    methods: ["GET", "POST"],
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
